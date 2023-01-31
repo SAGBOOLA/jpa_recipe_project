@@ -41,4 +41,16 @@ public class Recipe {
         this.instruction = instruction;
         this.categories = categories;
     }
+
+    public void addRecipeIngredient(RecipeIngredient recipeIngredient){
+        if (recipeIngredient == null) throw new IllegalArgumentException("recipeIngredient was null");
+        recipeIngredients.add(recipeIngredient);
+        recipeIngredient.setRecipe(this);
+    }
+
+    public void removeRecipeIngredient(RecipeIngredient recipeIngredient){
+        if (recipeIngredient == null) throw new IllegalArgumentException("recipeIngredient was null");
+        recipeIngredients.remove(recipeIngredient);
+        recipeIngredient.setRecipe(null);
+    }
 }
