@@ -26,7 +26,7 @@ public class Recipe {
     )
     private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "instruction_id")
+    @JoinColumn(name = "recipe_instruction_id")
     private RecipeInstruction instruction;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "recipe_recipe_category",
