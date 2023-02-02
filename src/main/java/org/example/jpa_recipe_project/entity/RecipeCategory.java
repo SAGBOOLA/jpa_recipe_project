@@ -31,4 +31,16 @@ public class RecipeCategory {
     public RecipeCategory(String category) {
         this.category = category;
     }
+
+    public void addRecipe(Recipe recipe1){
+        if (recipe1 == null) throw new IllegalArgumentException("recipe1 was null");
+        if (recipe == null) recipe = new ArrayList<>();
+
+        recipe.add(recipe1);
+    }
+
+    public void removeRecipe(Recipe recipe1){
+        if (recipe1 == null) throw new IllegalArgumentException("recipe1 was null");
+        if (recipe != null) recipe.remove(recipe1);
+    }
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -42,6 +43,10 @@ public class Recipe {
         this.categories = categories;
     }
 
+    public Recipe(String recipeName) {
+        this.recipeName = recipeName;
+    }
+
     public void addRecipeIngredient(RecipeIngredient recipeIngredient){
         if (recipeIngredient == null) throw new IllegalArgumentException("recipeIngredient was null");
         recipeIngredients.add(recipeIngredient);
@@ -52,5 +57,17 @@ public class Recipe {
         if (recipeIngredient == null) throw new IllegalArgumentException("recipeIngredient was null");
         recipeIngredients.remove(recipeIngredient);
         recipeIngredient.setRecipe(null);
+    }
+
+    public void addCategory(RecipeCategory category){
+        if (category == null) throw new IllegalArgumentException("category was null");
+        if (categories == null) categories = new ArrayList<>();
+
+            categories.add(category);
+    }
+
+    public void removeCategory(RecipeCategory category){
+        if (category == null) throw new IllegalArgumentException("category was null");
+        if (categories != null) categories.remove(category);
     }
 }
