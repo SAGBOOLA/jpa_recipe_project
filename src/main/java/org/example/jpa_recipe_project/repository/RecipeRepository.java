@@ -1,6 +1,7 @@
 package org.example.jpa_recipe_project.repository;
 
 import org.example.jpa_recipe_project.entity.Recipe;
+import org.example.jpa_recipe_project.entity.RecipeCategory;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public interface RecipeRepository extends CrudRepository<Recipe, Integer>{
 
-    List<Recipe> findAllByRecipeNameContains(String recipeName);
+    List<Recipe> findByRecipeNameContains(String recipeName);
 
     List<Recipe> findAllByRecipeIngredients_Ingredient_IngredientNameContainsIgnoreCase(String ingredientName);
 
