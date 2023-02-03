@@ -12,12 +12,12 @@ import java.util.List;
 
 public interface RecipeRepository extends CrudRepository<Recipe, Integer>{
 
-    List<Recipe> findByRecipeNameContains(String recipeName);
+    List<Recipe> findAllByRecipeNameContains(String recipeName);
 
     List<Recipe> findAllByRecipeIngredients_Ingredient_IngredientNameContainsIgnoreCase(String ingredientName);
 
-    @Query("select r from Recipe r where r.recipeName like concat('%', :name, '%') ")
-    List<Recipe> findRecipeNameContain(@Param("name") String name);
+    /*@Query("select r from Recipe r where r.recipeName like concat('%', :name, '%') ")
+    List<Recipe> findRecipeNameContain(@Param("name") String name);*/
 
     @Query("select r from Recipe r, RecipeIngredient ri, Ingredient i where i = ri.ingredient and ri member of r.recipeIngredients and i = :name")
     List<Recipe> selectRecipesByIngredientName(@Param("name") Ingredient ingredientName);

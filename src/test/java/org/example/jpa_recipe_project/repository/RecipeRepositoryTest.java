@@ -87,7 +87,7 @@ public class RecipeRepositoryTest {
     @Test
     public void test_recipeNameContains(){
         String name = "Noodle";
-        List<Recipe> actual = recipeRepository.findByRecipeNameContains(name);
+        List<Recipe> actual = recipeRepository.findAllByRecipeNameContains(name);
         assertNotNull(actual);
         assertEquals(1,actual.size());
         //String expected = createdRecipe1.getRecipeName();
