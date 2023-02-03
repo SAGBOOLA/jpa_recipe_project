@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,52 +20,62 @@ public class RecipeRepositoryTest {
 
     @Autowired
     RecipeRepository recipeRepository;
-    
 
+    @Autowired
+    RecipeIngredientRepository recipeIngredientRepository;
+
+    @Autowired
+    IngredientRepository ingredientRepository;
     Recipe createdRecipe1;
     Recipe createdRecipe2;
-
-    Ingredient ingredient1;
-    List<RecipeCategory> categories;
+    Ingredient almondMilk;
 
 
     @BeforeEach
     public void setup(){
-        ingredient1 = new Ingredient("Almond milk");
-        Ingredient ingredient2 = new Ingredient("Salt");
+        /*RecipeIngredient recipeIngredient2 = new RecipeIngredient(ingredient2, 5, Measurement.G);
+        recipeIngredientRepository.save(recipeIngredient1);
 
-
-        List<RecipeIngredient> ingredientList = new ArrayList<>();
-        ingredientList.add(new RecipeIngredient(ingredient1, 30, Measurement.G));
-        ingredientList.add(new RecipeIngredient(ingredient2, 5, Measurement.G));
-
-        RecipeIngredient recipeIngredient1 = new RecipeIngredient(ingredient1, 30, Measurement.G);
-        RecipeIngredient recipeIngredient2 = new RecipeIngredient(ingredient2, 5, Measurement.G);
-
-        RecipeInstruction recipeInstruction1 = new RecipeInstruction("How to cook");
-        RecipeInstruction recipeInstruction2 = new RecipeInstruction("Add a little");
-
-        categories = Arrays.asList(
+        List<RecipeIngredient> ingredientList = Arrays.asList(
+                new RecipeIngredient(ingredient1, 30, Measurement.G),
+                new RecipeIngredient(ingredient2, 5, Measurement.G)
+        );
+        List<RecipeCategory> categories = Arrays.asList(
                 new RecipeCategory("Vegan"),
-        new RecipeCategory("Chicken")
+                new RecipeCategory("Chicken")
         );
 
         List<RecipeCategory> categories1 = Arrays.asList(
                 new RecipeCategory("Chicken")
         );
-        RecipeCategory category1 = new RecipeCategory("Vegan");
-        RecipeCategory category2 = new RecipeCategory("Chicken");
-
-        /*List<Recipe> recipeList = Arrays.asList(
+        List<Recipe> recipeList = Arrays.asList(
                 new Recipe("Noodles", ingredientList, recipeInstruction1, categories),
                 new Recipe("soup", ingredientList, recipeInstruction2, categories1)
         );*/
 
+
+        almondMilk = new Ingredient("Almond milk");
+        Ingredient salt = new Ingredient("Salt");
+        ingredientRepository.save(almondMilk);
+
+        RecipeIngredient recipeIngredient1 = new RecipeIngredient(almondMilk, 30, Measurement.G);
+
+        RecipeInstruction recipeInstruction1 = new RecipeInstruction("How to cook");
+        RecipeInstruction recipeInstruction2 = new RecipeInstruction("Add a little");
+
+        RecipeCategory category1 = new RecipeCategory("Vegan");
+        RecipeCategory category2 = new RecipeCategory("Chicken");
+        RecipeCategory category3 = new RecipeCategory("Lunch");
+
         Recipe recipeData1 = new Recipe("Noodles", recipeInstruction1);
         Recipe recipeData2 = new Recipe("soup", recipeInstruction2);
-        Recipe recipeData3 = new Recipe("cereal");
+        Recipe recipeData3 = new Recipe("Rice");
         recipeData1.addCategory(category1);
+        recipeData1.addCategory(category2);
+        recipeData2.addCategory(category2);
+        recipeData2.addCategory(category3);
         recipeData1.addRecipeIngredient(recipeIngredient1);
+
 
        createdRecipe1 = recipeRepository.save(recipeData1);
        createdRecipe2 = recipeRepository.save(recipeData2);
@@ -85,23 +96,26 @@ public class RecipeRepositoryTest {
         temp.add(new Recipe("Pasta"));
        List<Recipe> actual = recipeRepository.findByRecipeNameContains(temp.toString());
        assertAll(()->{assertEquals("Noodles", actual.get);});*/
-
-
         /*List<Recipe> actual = recipeRepository.findAllByRecipeNameContains(createdRecipe1.getRecipeName());
         St expected = createdRecipe1.getRecipeName();*/
-
     }
 
-    //@Test
-    /*public void test_ingredientName(){
-        //String name = "salt";
-        List<Recipe> actual = recipeRepository.findAllByRecipeIngredients_Ingredient_IngredientNameContainsIgnoreCase(ingredient1.getIngredientName());
-        assertEquals(1, actual.size());
-    }*/
+    @Test
+    public void test_ingredientName(){
+        assertEquals(1, recipeRepository.selectRecipesByIngredientName(almondMilk).size());
+    }
 
     @Test
     public void test_categoryName(){
         List<Recipe> actual = recipeRepository.selectByCategory("Vegan");
         assertEquals(1, actual.size());
+    }
+
+    @Test
+    public void test_categories(){
+        List<String> result = Arrays.asList(
+                "Chicken", "Lunch"
+        );
+        assertEquals(3, recipeRepository.selectAllByRecipeThatMatchOneOrMoreCategories(result).size());
     }
 }
