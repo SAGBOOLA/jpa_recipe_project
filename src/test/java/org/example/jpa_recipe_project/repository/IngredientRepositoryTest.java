@@ -38,6 +38,7 @@ public class IngredientRepositoryTest {
     public void test_findByIngredientName() {
         Optional<Ingredient> actual = testObject.findByIngredientName(createdIngredient.getIngredientName());
         Ingredient expected = createdIngredient;
+        assertTrue(actual.isPresent());
         assertEquals(expected, actual.get());
     }
 
@@ -74,7 +75,7 @@ public class IngredientRepositoryTest {
 
     @Test
     public void test_update(){
-        Ingredient expected = new Ingredient(createdIngredient.getId(), "Pasta");
+        Ingredient expected = createdIngredient;
         Optional<Ingredient> result = testObject.findById(createdIngredient.getId());
         assertTrue(result.isPresent());
         result.get().setIngredientName("Pasta");
